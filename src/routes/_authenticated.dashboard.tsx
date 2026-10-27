@@ -62,7 +62,7 @@ function Dashboard() {
             <PanelTitle action={<Link to="/sites" className="text-sm font-semibold text-primary">All sites</Link>}>Sites</PanelTitle>
             <div className="mb-3 flex gap-2">
               <div className="relative flex-1"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input className="h-10 pl-9" placeholder="Search sites" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search sites" /></div>
-              <Select value={status} onValueChange={(v) => setStatus(v as SiteStatus | "all")}><SelectTrigger className="h-10 w-[130px]" aria-label="Status"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All</SelectItem><SelectItem value="active">Active</SelectItem><SelectItem value="completed">Completed</SelectItem><SelectItem value="inactive">Inactive</SelectItem></SelectContent></Select>
+              <Select value={status} onValueChange={(v) => setStatus(v as SiteStatus | "all")}><SelectTrigger className="h-10 w-[110px] shrink-0" aria-label="Status"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All</SelectItem><SelectItem value="active">Active</SelectItem><SelectItem value="completed">Completed</SelectItem><SelectItem value="inactive">Inactive</SelectItem></SelectContent></Select>
             </div>
             {sites.length === 0 ? (
               <EmptyState icon={<Building2 className="size-5" />} title={allSites.length ? "No sites match" : "No sites yet"} body={allSites.length ? "Change the search or status filter." : "Create your first site to start recording entries."} action={!allSites.length && can(user, "manageStaffSites") ? <Button asChild><Link to="/sites">Create site</Link></Button> : undefined} />
