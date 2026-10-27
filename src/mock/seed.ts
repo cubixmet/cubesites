@@ -127,7 +127,7 @@ export function generateDemoDB(): DemoDB {
     const payments = int(2, 5);
     for (let k = 0; k < payments; k++) {
       const d = iso(daysAgo(int(1, Math.max(10, startAgo))));
-      entries.push({ id: uid("e"), siteId: site.id, type: "payment", description: pick(["Advance payment", "Stage payment – foundation", "Stage payment – roof slab", "Part payment via NEFT", "Cheque received"]), totalPaise: int(5, 30) * 10000000 / 100, date: d, attachmentIds: [], createdBy: owner.id, createdAt: new Date(d + "T12:00:00").toISOString(), updatedAt: new Date(d + "T12:00:00").toISOString() });
+      entries.push({ id: uid("e"), siteId: site.id, type: "payment", description: pick(["Advance payment", "Stage payment – foundation", "Stage payment – roof slab", "Part payment via NEFT", "Cheque received"]), totalPaise: int(5, 30) * 5000000, date: d, attachmentIds: [], createdBy: owner.id, createdAt: new Date(d + "T12:00:00").toISOString(), updatedAt: new Date(d + "T12:00:00").toISOString() });
     }
     const photos = int(3, 7);
     const captions = ["Foundation work", "Plinth beam", "Column casting", "Lintel level", "Roof slab concreting", "Plastering", "Tile work", "Painting"];
