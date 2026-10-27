@@ -16,7 +16,7 @@ import { formatDate, todayISO } from "@/lib/format";
 import type { Attachment } from "@/types";
 import { DateRangeFilter, EmptyState, type DateRange } from "./common";
 
-export function PhotoGallery({ siteId, showSite }: { siteId?: string; showSite?: boolean }) {
+export function PhotoGallery({ siteId, showSite, allowUpload = true }: { siteId?: string; showSite?: boolean; allowUpload?: boolean }) {
   const db = useDb();
   const user = useCurrentUser();
   const [range, setRange] = useState<DateRange>({ key: "all" });
@@ -30,7 +30,7 @@ export function PhotoGallery({ siteId, showSite }: { siteId?: string; showSite?:
     photos.forEach((p) => m.set(p.date, [...(m.get(p.date) ?? []), p]));
     return [...m];
   }, [photos]);
-  const canUpload = can(user, "uploadMedia") && !!siteId;
+  const canUpload = can(user, "uploadMedia") && !!siteId && allowUpload;
 
   const Tile = ({ p }: { p: Attachment }) => (
     <button type="button" onClick={() => setPreview(p)} className="group overflow-hidden rounded-lg border bg-muted text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
