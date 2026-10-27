@@ -102,7 +102,7 @@ function SiteDetail() {
             </Panel>
           )}
         </TabsContent>
-        <TabsContent value="photos" className="mt-4"><PhotoGallery siteId={site.status === "active" ? siteId : undefined} /></TabsContent>
+        <TabsContent value="photos" className="mt-4"><PhotoGallery siteId={siteId} allowUpload={site.status === "active"} /></TabsContent>
         <TabsContent value="bills" className="mt-4">
           {bills.length === 0 ? <EmptyState icon={<Paperclip className="size-5" />} title="No bill images" body="Attach bills when adding entries." /> : (
             <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">

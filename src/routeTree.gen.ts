@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedEntriesRouteImport } from './routes/_authenticated.entries'
+import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated.payments'
+import { Route as AuthenticatedPhotosRouteImport } from './routes/_authenticated.photos'
 import { Route as AuthenticatedEntryNewRouteImport } from './routes/_authenticated.entry.new'
 import { Route as AuthenticatedSitesIndexRouteImport } from './routes/_authenticated.sites.index'
 import { Route as AuthenticatedSitesSiteIdRouteImport } from './routes/_authenticated.sites.$siteId'
@@ -42,6 +44,16 @@ const AuthenticatedEntriesRoute = AuthenticatedEntriesRouteImport.update({
   path: '/entries',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPaymentsRoute = AuthenticatedPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPhotosRoute = AuthenticatedPhotosRouteImport.update({
+  id: '/photos',
+  path: '/photos',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedEntryNewRoute = AuthenticatedEntryNewRouteImport.update({
   id: '/entry/new',
   path: '/entry/new',
@@ -64,6 +76,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/entries': typeof AuthenticatedEntriesRoute
+  '/payments': typeof AuthenticatedPaymentsRoute
+  '/photos': typeof AuthenticatedPhotosRoute
   '/entry/new': typeof AuthenticatedEntryNewRoute
   '/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
   '/sites/': typeof AuthenticatedSitesIndexRoute
@@ -73,6 +87,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/entries': typeof AuthenticatedEntriesRoute
+  '/payments': typeof AuthenticatedPaymentsRoute
+  '/photos': typeof AuthenticatedPhotosRoute
   '/entry/new': typeof AuthenticatedEntryNewRoute
   '/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
   '/sites': typeof AuthenticatedSitesIndexRoute
@@ -84,6 +100,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/entries': typeof AuthenticatedEntriesRoute
+  '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
+  '/_authenticated/photos': typeof AuthenticatedPhotosRoute
   '/_authenticated/entry/new': typeof AuthenticatedEntryNewRoute
   '/_authenticated/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
   '/_authenticated/sites/': typeof AuthenticatedSitesIndexRoute
@@ -95,6 +113,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard'
     | '/entries'
+    | '/payments'
+    | '/photos'
     | '/entry/new'
     | '/sites/$siteId'
     | '/sites/'
@@ -104,6 +124,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard'
     | '/entries'
+    | '/payments'
+    | '/photos'
     | '/entry/new'
     | '/sites/$siteId'
     | '/sites'
@@ -114,6 +136,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/dashboard'
     | '/_authenticated/entries'
+    | '/_authenticated/payments'
+    | '/_authenticated/photos'
     | '/_authenticated/entry/new'
     | '/_authenticated/sites/$siteId'
     | '/_authenticated/sites/'
@@ -162,6 +186,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEntriesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/payments': {
+      id: '/_authenticated/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof AuthenticatedPaymentsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/photos': {
+      id: '/_authenticated/photos'
+      path: '/photos'
+      fullPath: '/photos'
+      preLoaderRoute: typeof AuthenticatedPhotosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/entry/new': {
       id: '/_authenticated/entry/new'
       path: '/entry/new'
@@ -189,6 +227,8 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEntriesRoute: typeof AuthenticatedEntriesRoute
+  AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
+  AuthenticatedPhotosRoute: typeof AuthenticatedPhotosRoute
   AuthenticatedEntryNewRoute: typeof AuthenticatedEntryNewRoute
   AuthenticatedSitesSiteIdRoute: typeof AuthenticatedSitesSiteIdRoute
   AuthenticatedSitesIndexRoute: typeof AuthenticatedSitesIndexRoute
@@ -197,6 +237,8 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEntriesRoute: AuthenticatedEntriesRoute,
+  AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
+  AuthenticatedPhotosRoute: AuthenticatedPhotosRoute,
   AuthenticatedEntryNewRoute: AuthenticatedEntryNewRoute,
   AuthenticatedSitesSiteIdRoute: AuthenticatedSitesSiteIdRoute,
   AuthenticatedSitesIndexRoute: AuthenticatedSitesIndexRoute,
