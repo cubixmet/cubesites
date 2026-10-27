@@ -10,33 +10,119 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedEntriesRouteImport } from './routes/_authenticated.entries'
+import { Route as AuthenticatedEntryNewRouteImport } from './routes/_authenticated.entry.new'
+import { Route as AuthenticatedSitesIndexRouteImport } from './routes/_authenticated.sites.index'
+import { Route as AuthenticatedSitesSiteIdRouteImport } from './routes/_authenticated.sites.$siteId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEntriesRoute = AuthenticatedEntriesRouteImport.update({
+  id: '/entries',
+  path: '/entries',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEntryNewRoute = AuthenticatedEntryNewRouteImport.update({
+  id: '/entry/new',
+  path: '/entry/new',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSitesIndexRoute = AuthenticatedSitesIndexRouteImport.update({
+  id: '/sites/',
+  path: '/sites/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSitesSiteIdRoute =
+  AuthenticatedSitesSiteIdRouteImport.update({
+    id: '/sites/$siteId',
+    path: '/sites/$siteId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/entries': typeof AuthenticatedEntriesRoute
+  '/entry/new': typeof AuthenticatedEntryNewRoute
+  '/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
+  '/sites/': typeof AuthenticatedSitesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/entries': typeof AuthenticatedEntriesRoute
+  '/entry/new': typeof AuthenticatedEntryNewRoute
+  '/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
+  '/sites': typeof AuthenticatedSitesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/entries': typeof AuthenticatedEntriesRoute
+  '/_authenticated/entry/new': typeof AuthenticatedEntryNewRoute
+  '/_authenticated/sites/$siteId': typeof AuthenticatedSitesSiteIdRoute
+  '/_authenticated/sites/': typeof AuthenticatedSitesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/entries'
+    | '/entry/new'
+    | '/sites/$siteId'
+    | '/sites/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/entries'
+    | '/entry/new'
+    | '/sites/$siteId'
+    | '/sites'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/entries'
+    | '/_authenticated/entry/new'
+    | '/_authenticated/sites/$siteId'
+    | '/_authenticated/sites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +134,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/entries': {
+      id: '/_authenticated/entries'
+      path: '/entries'
+      fullPath: '/entries'
+      preLoaderRoute: typeof AuthenticatedEntriesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/entry/new': {
+      id: '/_authenticated/entry/new'
+      path: '/entry/new'
+      fullPath: '/entry/new'
+      preLoaderRoute: typeof AuthenticatedEntryNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/sites/': {
+      id: '/_authenticated/sites/'
+      path: '/sites'
+      fullPath: '/sites/'
+      preLoaderRoute: typeof AuthenticatedSitesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/sites/$siteId': {
+      id: '/_authenticated/sites/$siteId'
+      path: '/sites/$siteId'
+      fullPath: '/sites/$siteId'
+      preLoaderRoute: typeof AuthenticatedSitesSiteIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEntriesRoute: typeof AuthenticatedEntriesRoute
+  AuthenticatedEntryNewRoute: typeof AuthenticatedEntryNewRoute
+  AuthenticatedSitesSiteIdRoute: typeof AuthenticatedSitesSiteIdRoute
+  AuthenticatedSitesIndexRoute: typeof AuthenticatedSitesIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEntriesRoute: AuthenticatedEntriesRoute,
+  AuthenticatedEntryNewRoute: AuthenticatedEntryNewRoute,
+  AuthenticatedSitesSiteIdRoute: AuthenticatedSitesSiteIdRoute,
+  AuthenticatedSitesIndexRoute: AuthenticatedSitesIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
