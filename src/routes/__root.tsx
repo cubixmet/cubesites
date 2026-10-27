@@ -56,14 +56,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cut" },
       { name: "theme-color", content: "#2e6e4a" },
-      { title: "CubeSites — Bookkeeping for contractors" },
-      { name: "description", content: "Mobile-first bookkeeping for contractors managing multiple construction sites." },
+      { name: "application-name", content: "Cubixmet's CubeSites" },
+      { name: "author", content: "Cubixmet" },
+      { title: "Cubixmet's CubeSites — Bookkeeping for contractors" },
+      {
+        name: "description",
+        content:
+          "Cubixmet's CubeSites — mobile-first bookkeeping for contractors managing multiple construction sites.",
+      },
+      { property: "og:site_name", content: "Cubixmet's CubeSites" },
+      { property: "og:title", content: "Cubixmet's CubeSites — Bookkeeping for contractors" },
+      {
+        property: "og:description",
+        content:
+          "Mobile-first bookkeeping for contractors managing multiple construction sites. Built by Cubixmet.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Cubixmet's CubeSites — Bookkeeping for contractors" },
+      {
+        name: "twitter:description",
+        content:
+          "Mobile-first bookkeeping for contractors managing multiple construction sites. Built by Cubixmet.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "manifest", href: "/icons.ico/manifest.json" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" },

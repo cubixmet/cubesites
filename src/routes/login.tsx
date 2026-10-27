@@ -13,10 +13,19 @@ export const Route = createFileRoute("/login")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in — CubeSites" },
-      { name: "description", content: "Sign in to your CubeSites contractor workspace." },
-      { property: "og:title", content: "Sign in — CubeSites" },
-      { property: "og:description", content: "Sign in to manage your construction sites, expenses and payments." },
+      { title: "Sign in — Cubixmet's CubeSites" },
+      { name: "description", content: "Sign in to your Cubixmet's CubeSites contractor workspace." },
+      { property: "og:site_name", content: "Cubixmet's CubeSites" },
+      { property: "og:title", content: "Sign in — Cubixmet's CubeSites" },
+      {
+        property: "og:description",
+        content: "Sign in to manage your construction sites, expenses and payments.",
+      },
+      { name: "twitter:title", content: "Sign in — Cubixmet's CubeSites" },
+      {
+        name: "twitter:description",
+        content: "Sign in to manage your construction sites, expenses and payments.",
+      },
     ],
   }),
   component: Login,

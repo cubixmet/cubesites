@@ -21,10 +21,16 @@ import type { SiteStatus } from "@/types";
 export const Route = createFileRoute("/_authenticated/sites/$siteId")({
   head: () => ({
     meta: [
-      { title: "Site dashboard — CubeSites" },
-      { name: "description", content: "Expenses, client payments, staff, bills and progress photos for one site." },
-      { property: "og:title", content: "Site dashboard — CubeSites" },
+      { title: "Site dashboard — Cubixmet's CubeSites" },
+      {
+        name: "description",
+        content: "Expenses, client payments, staff, bills and progress photos for one site.",
+      },
+      { property: "og:site_name", content: "Cubixmet's CubeSites" },
+      { property: "og:title", content: "Site dashboard — Cubixmet's CubeSites" },
       { property: "og:description", content: "Per-site bookkeeping dashboard." },
+      { name: "twitter:title", content: "Site dashboard — Cubixmet's CubeSites" },
+      { name: "twitter:description", content: "Per-site bookkeeping dashboard." },
     ],
   }),
   component: SiteDetail,

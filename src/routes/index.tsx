@@ -6,10 +6,25 @@ import { authService } from "@/services/auth";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CubeSites — Site bookkeeping for Kerala contractors" },
-      { name: "description", content: "Track expenses, client payments, staff and progress photos across all your construction sites." },
-      { property: "og:title", content: "CubeSites — Site bookkeeping for contractors" },
-      { property: "og:description", content: "Mobile-first bookkeeping for contractors managing multiple construction worksites." },
+      { title: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      {
+        name: "description",
+        content:
+          "Track expenses, client payments, staff and progress photos across all your construction sites with Cubixmet's CubeSites.",
+      },
+      { property: "og:site_name", content: "Cubixmet's CubeSites" },
+      { property: "og:title", content: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      {
+        property: "og:description",
+        content:
+          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built by Cubixmet.",
+      },
+      { name: "twitter:title", content: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      {
+        name: "twitter:description",
+        content:
+          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built by Cubixmet.",
+      },
     ],
   }),
   component: Index,
