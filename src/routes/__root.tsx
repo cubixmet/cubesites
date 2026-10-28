@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { BuildUpdateGuard } from "@/components/BuildUpdateGuard";
+import { CLIENT_BUILD } from "@/lib/build-info";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -58,6 +60,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#2e6e4a" },
       { name: "application-name", content: "Cubixmet's CubeSites" },
       { name: "author", content: "Cubixmet" },
+      { name: "cubesites-build", content: CLIENT_BUILD.buildNumber },
+      { name: "cubesites-version", content: CLIENT_BUILD.version },
       { title: "Cubixmet's CubeSites — Bookkeeping for contractors" },
       {
         name: "description",
@@ -113,6 +117,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <BuildUpdateGuard />
       <Outlet />
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
