@@ -8,7 +8,7 @@ import { authService } from "@/services/auth";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/_authenticated/more")({
-  head: pageHead("More", "Staff, reports, photos, subscription and settings."),
+  head: pageHead("More", "Staff, reports, subscription and settings."),
   component: More,
 });
 

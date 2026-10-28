@@ -46,10 +46,10 @@ function Sites() {
   return (
     <>
       <PageHeader title="Sites" subtitle={`${sites.length} shown`} actions={manage && <Button onClick={() => { setEditing(undefined); setFormOpen(true); }}><Plus /> New site</Button>} />
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row">
-        <div className="relative flex-1"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input className="h-10 pl-9" placeholder="Search by name or address" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search sites" /></div>
-        <Tabs value={status} onValueChange={(v) => setStatus(v as SiteStatus | "all")}>
-          <TabsList className="h-10"><TabsTrigger value="all">All</TabsTrigger><TabsTrigger value="active">Active</TabsTrigger><TabsTrigger value="completed">Completed</TabsTrigger><TabsTrigger value="inactive">Inactive</TabsTrigger></TabsList>
+      <div className="mb-4 flex min-w-0 flex-col gap-2 sm:flex-row">
+        <div className="relative min-w-0 flex-1"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input className="h-10 pl-9" placeholder="Search by name or address" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search sites" /></div>
+        <Tabs value={status} onValueChange={(v) => setStatus(v as SiteStatus | "all")} className="min-w-0 max-w-full">
+          <TabsList className="h-10 w-full max-w-full justify-start overflow-x-auto"><TabsTrigger value="all">All</TabsTrigger><TabsTrigger value="active">Active</TabsTrigger><TabsTrigger value="completed">Completed</TabsTrigger><TabsTrigger value="inactive">Inactive</TabsTrigger></TabsList>
         </Tabs>
       </div>
 
@@ -75,8 +75,8 @@ function Sites() {
               );
             })}
           </div>
-          <div className="hidden overflow-hidden rounded-xl border bg-card md:block">
-            <table className="w-full text-sm">
+          <div className="hidden max-w-full overflow-x-auto overscroll-x-contain rounded-xl border bg-card md:block">
+            <table className="w-full min-w-[44rem] text-sm">
               <thead className="bg-surface text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <tr><th className="px-4 py-3">Site</th><th className="px-4 py-3">Contact</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Started</th>{fin && <><th className="px-4 py-3 text-right">Expenses</th><th className="px-4 py-3 text-right">Received</th><th className="px-4 py-3 text-right">Net</th></>}<th className="w-12" /></tr>
               </thead>
@@ -85,11 +85,11 @@ function Sites() {
                   const t = siteQueries.totals(db, s.id);
                   return (
                     <tr key={s.id} className="hover:bg-muted/40">
-                      <td className="px-4 py-3"><Link to="/sites/$siteId" params={{ siteId: s.id }} className="font-semibold hover:text-primary">{s.name}</Link><p className="text-xs text-muted-foreground">{s.address}</p></td>
-                      <td className="px-4 py-3 tabular">{s.primaryPhone}</td>
+                      <td className="max-w-[14rem] px-4 py-3"><Link to="/sites/$siteId" params={{ siteId: s.id }} className="font-semibold hover:text-primary">{s.name}</Link><p className="truncate text-xs text-muted-foreground">{s.address}</p></td>
+                      <td className="whitespace-nowrap px-4 py-3 tabular">{s.primaryPhone}</td>
                       <td className="px-4 py-3"><StatusBadge status={s.status} /></td>
-                      <td className="px-4 py-3">{formatDate(s.startDate)}</td>
-                      {fin && <><td className="px-4 py-3 text-right tabular">{formatINRShort(t.expenses)}</td><td className="px-4 py-3 text-right tabular text-income">{formatINRShort(t.payments)}</td><td className={`px-4 py-3 text-right font-semibold tabular ${t.net >= 0 ? "text-income" : "text-expense"}`}>{formatINRShort(t.net)}</td></>}
+                      <td className="whitespace-nowrap px-4 py-3">{formatDate(s.startDate)}</td>
+                      {fin && <><td className="whitespace-nowrap px-4 py-3 text-right tabular">{formatINRShort(t.expenses)}</td><td className="whitespace-nowrap px-4 py-3 text-right tabular text-income">{formatINRShort(t.payments)}</td><td className={`whitespace-nowrap px-4 py-3 text-right font-semibold tabular ${t.net >= 0 ? "text-income" : "text-expense"}`}>{formatINRShort(t.net)}</td></>}
                       <td className="px-2">{actions(s)}</td>
                     </tr>
                   );

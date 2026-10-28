@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowLeft, MapPin, Paperclip, Pencil, Phone, Plus, UserPlus, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,13 @@ import { ENTRY_TYPE_LABEL, formatDate, formatDateTime, formatINR, formatINRShort
 import { sumPaise } from "@/lib/money";
 import type { SiteStatus } from "@/types";
 
+const SITE_TABS = ["entries", "photos", "bills", "staff", "history"] as const;
+type SiteTab = (typeof SITE_TABS)[number];
+
 export const Route = createFileRoute("/_authenticated/sites/$siteId")({
+  validateSearch: (s: Record<string, unknown>): { tab?: SiteTab } => ({
+    tab: SITE_TABS.includes(s.tab as SiteTab) ? (s.tab as SiteTab) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Site dashboard — Cubixmet's CubeSites" },
@@ -38,6 +44,8 @@ export const Route = createFileRoute("/_authenticated/sites/$siteId")({
 
 function SiteDetail() {
   const { siteId } = Route.useParams();
+  const { tab: tabSearch } = Route.useSearch();
+  const nav = useNavigate({ from: "/sites/$siteId" });
   const db = useDb();
   const user = useCurrentUser();
   const site = siteQueries.get(db, siteId);
@@ -47,6 +55,7 @@ function SiteDetail() {
   const [assign, setAssign] = useState(false);
   const [statusTo, setStatusTo] = useState<SiteStatus | null>(null);
   const entries = useMemo(() => entryQueries.list(db, { siteId, from: range.from, to: range.to, q }), [db, siteId, range, q]);
+  const tab = tabSearch ?? "entries";
 
   if (!site || !visibleSiteIds(db, user).includes(siteId)) return <EmptyState title="Site not found" body="It may have been removed or you don't have access." action={<Button asChild variant="outline"><Link to="/sites">Back to sites</Link></Button>} />;
 
@@ -57,6 +66,7 @@ function SiteDetail() {
   const maxCat = Math.max(1, ...cats.map((c) => c.v));
   const staff = staffQueries.forSite(db, siteId);
   const bills = mediaQueries.list(db, { siteId, kind: "bill", from: range.from, to: range.to });
+  const photos = mediaQueries.list(db, { siteId, kind: "photo" });
   const hist = db.activity.filter((l) => l.siteId === siteId).slice(0, 10);
 
   return (
@@ -80,10 +90,14 @@ function SiteDetail() {
         <div className="col-span-2 lg:col-span-1"><StatCard label="Net recorded cash flow" value={fin ? formatINRShort(t.net) : "••••"} tone={t.net >= 0 ? "income" : "expense"} hint="Not profit — payments minus recorded expenses" /></div>
       </div>
 
-      <Tabs defaultValue="entries" className="mt-5">
-        <TabsList className="h-11 w-full justify-start overflow-x-auto">
+      <Tabs
+        value={tab}
+        onValueChange={(v) => nav({ search: { tab: v === "entries" ? undefined : (v as SiteTab) }, replace: true })}
+        className="mt-5"
+      >
+        <TabsList className="h-11 w-full max-w-full justify-start overflow-x-auto overscroll-x-contain">
           <TabsTrigger value="entries">Transactions</TabsTrigger>
-          <TabsTrigger value="photos">Photos</TabsTrigger>
+          <TabsTrigger value="photos">Photos ({photos.length})</TabsTrigger>
           <TabsTrigger value="bills">Bills ({bills.length})</TabsTrigger>
           <TabsTrigger value="staff">Staff</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>

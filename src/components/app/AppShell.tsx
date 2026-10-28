@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Activity, Bell, Building2, CreditCard, FileBarChart, Home, Images, LogOut, Menu, Plus, Settings, Users, Wallet, ListChecks } from "lucide-react";
+import { Activity, Bell, Building2, CreditCard, FileBarChart, Home, LogOut, Menu, Plus, Settings, Users, Wallet, ListChecks } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,6 @@ const NAV: { to: string; label: string; icon: typeof Home; perm?: PermissionKey 
   { to: "/sites", label: "Sites", icon: Building2 },
   { to: "/entries", label: "Entries", icon: ListChecks },
   { to: "/payments", label: "Client payments", icon: Wallet, perm: "viewFinancials" },
-  { to: "/photos", label: "Photos", icon: Images },
   { to: "/staff", label: "Staff", icon: Users, perm: "manageStaffSites" },
   { to: "/reports", label: "Reports", icon: FileBarChart, perm: "reports" },
   { to: "/activity", label: "Activity log", icon: Activity },
@@ -100,8 +99,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const title = items.find((n) => active(n.to))?.label ?? (path.startsWith("/entry") ? "New entry" : path.startsWith("/more") ? "More" : "");
 
   return (
-    <div className="min-h-screen bg-background md:flex">
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r bg-sidebar p-4 md:flex">
+    <div className="flex h-dvh flex-col overflow-hidden bg-background md:flex-row">
+      <aside className="hidden h-full w-64 shrink-0 flex-col border-r bg-sidebar p-4 md:flex">
         <Link to="/dashboard" className="mb-6 px-2"><Logo /></Link>
         {can(user, "createEntries") && <Button asChild size="lg" className="mb-4"><Link to="/entry/new"><Plus /> Add entry</Link></Button>}
         <nav className="flex-1 space-y-0.5 overflow-y-auto">
@@ -117,31 +116,30 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-2 border-b bg-background/90 px-4 backdrop-blur md:px-8">
-          <Link to="/dashboard" className="md:hidden"><Logo /></Link>
-          <p className="hidden text-sm font-medium text-muted-foreground md:block">{title}</p>
-          <div className="ml-auto flex items-center gap-1">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden">
+        <header className="z-30 flex h-16 min-w-0 shrink-0 items-center gap-2 border-b bg-background/90 px-4 backdrop-blur md:px-8">
+          <Link to="/dashboard" className="min-w-0 truncate md:hidden"><Logo /></Link>
+          <p className="hidden min-w-0 truncate text-sm font-medium text-muted-foreground md:block">{title}</p>
+          <div className="ml-auto flex shrink-0 items-center gap-1">
             <Notifications />
             <UserMenu />
           </div>
         </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-5 md:px-8 md:pb-10">{children}</main>
+        <main className="mx-auto w-full min-w-0 max-w-6xl flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-4 pb-6 pt-5 md:px-8 md:pb-10">{children}</main>
+        <nav className="pb-safe z-40 grid shrink-0 grid-cols-4 border-t bg-card md:hidden" aria-label="Primary">
+          {[
+            { to: "/dashboard", label: "Home", icon: Home },
+            { to: "/sites", label: "Sites", icon: Building2 },
+            { to: "/entry/new", label: "Add Entry", icon: Plus, primary: true },
+            { to: "/more", label: "More", icon: Menu },
+          ].map(({ to, label, icon: Icon, primary }) => (
+            <Link key={to} to={to} className={cn("flex flex-col items-center gap-1 pt-2 text-[11px] font-semibold", active(to) ? "text-primary" : "text-muted-foreground")}>
+              {primary ? <span className="-mt-5 grid size-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-background"><Icon className="size-6" /></span> : <Icon className="size-5" />}
+              {label}
+            </Link>
+          ))}
+        </nav>
       </div>
-
-      <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t bg-card md:hidden" aria-label="Primary">
-        {[
-          { to: "/dashboard", label: "Home", icon: Home },
-          { to: "/sites", label: "Sites", icon: Building2 },
-          { to: "/entry/new", label: "Add Entry", icon: Plus, primary: true },
-          { to: "/more", label: "More", icon: Menu },
-        ].map(({ to, label, icon: Icon, primary }) => (
-          <Link key={to} to={to} className={cn("flex flex-col items-center gap-1 pt-2 text-[11px] font-semibold", active(to) ? "text-primary" : "text-muted-foreground")}>
-            {primary ? <span className="-mt-5 grid size-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-background"><Icon className="size-6" /></span> : <Icon className="size-5" />}
-            {label}
-          </Link>
-        ))}
-      </nav>
     </div>
   );
 }
