@@ -21,7 +21,7 @@ export const parseQty = (q: string): number | null => {
 
 /** total = qty × unit, rounded to the nearest paisa. */
 export const totalFrom = (qty: number, unitPaise: number): number =>
-  Math.round(Math.round(qty * 1000) * unitPaise / 1000);
+  Math.round((Math.round(qty * 1000) * unitPaise) / 1000);
 
 /** unit = total ÷ qty; returns null when qty is zero. */
 export const unitFrom = (qty: number, totalPaise: number): number | null => {

@@ -11,7 +11,7 @@ Demo auth is stored in localStorage and is **not secure** — real authenticatio
   - `login`, `_authenticated` (session gate + app shell), `dashboard`, `sites/`, `sites/$siteId`, `entry/new`, `entries`, `payments`, `photos`, `staff`, `reports`, `subscription`, `settings`, `activity`, `more`.
 - `src/components/app/` — shell, entry form, item combobox, attachment picker, photo gallery, site dialogs, shared UI.
 - `src/services/` — **all** reads (`*Queries`) and mutations (`*Service`): auth, sites, entries/items, media, staff, account (billing/settings/notifications/prefs), reports/export.
-- `src/mock/` — `seed.ts` generates Kerala-context demo data; `store.ts` is the isolated localStorage persistence (reset from Settings → Demo data).
+- `src/mock/` — `seed.ts` generates demo-only sample data (Kerala place names for realism); product UI is region-agnostic. `store.ts` is isolated localStorage persistence (reset from Settings → Demo data).
 - `src/lib/billing.ts` — pricing rules (sites, staff, storage, reactivation proration, tax). Tested in `billing.test.ts`.
 - `src/lib/money.ts` — integer-paise money math for qty/unit/total.
 - `src/types/` — entity interfaces.

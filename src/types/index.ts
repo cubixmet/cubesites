@@ -1,4 +1,4 @@
-// Core domain types for CubeSites. Money is always integer paise.
+// Core domain types for CuboSites. Money is always integer paise.
 
 export type ID = string;
 export type ISODate = string; // yyyy-mm-dd
@@ -110,7 +110,18 @@ export interface ActivityLog {
   actorId: ID;
   at: ISODateTime;
   action: "create" | "update" | "delete" | "deactivate" | "reactivate" | "complete" | "login";
-  targetType: "site" | "entry" | "item" | "staff" | "photo" | "invoice" | "settings" | "session";
+  targetType:
+    | "site"
+    | "entry"
+    | "item"
+    | "staff"
+    | "photo"
+    | "invoice"
+    | "settings"
+    | "session"
+    | "note"
+    | "reminder"
+    | "backup";
   targetId?: ID;
   siteId?: ID;
   summary: string;
@@ -154,6 +165,27 @@ export interface BillingPayment {
   at: ISODateTime;
 }
 
+export type WalletFunding = "free" | "paid";
+export interface WalletTransaction {
+  id: ID;
+  amountPaise: number;
+  kind: "recharge" | "debit" | "adjustment";
+  funding: WalletFunding;
+  source: "admin" | "razorpay" | "system";
+  note: string;
+  reference: string;
+  balanceAfterPaise: number;
+  countsAsIncome: boolean;
+  at: ISODateTime;
+}
+
+export interface WalletState {
+  balancePaise: number;
+  paidRechargedPaise: number;
+  freeRechargedPaise: number;
+  transactions: WalletTransaction[];
+}
+
 export interface AppNotification {
   id: ID;
   title: string;
@@ -162,13 +194,39 @@ export interface AppNotification {
   read: boolean;
 }
 
+export interface Note {
+  id: ID;
+  siteId?: ID;
+  title: string;
+  body: string;
+  pinned: boolean;
+  createdBy?: ID;
+  createdAt: ISODateTime;
+  updatedAt: ISODateTime;
+}
+
+export interface Reminder {
+  id: ID;
+  siteId?: ID;
+  title: string;
+  body: string;
+  dueAt: ISODateTime;
+  done: boolean;
+  notifiedAt?: ISODateTime;
+  createdBy?: ID;
+  createdAt: ISODateTime;
+  updatedAt: ISODateTime;
+}
+
 export type DriveStatus = "not_connected" | "connected" | "expired";
 
 export interface BackupRecord {
   id: ID;
   at: ISODateTime;
-  status: "success" | "failed";
+  status: "success" | "failed" | "pending" | "running";
   note: string;
+  jobType?: "scheduled" | "manual" | string;
+  sizeBytes?: number;
 }
 
 export interface Settings {
@@ -176,8 +234,15 @@ export interface Settings {
   taxRatePct: number;
   showTaxBreakup: boolean;
   driveStatus: DriveStatus;
+  driveEmail?: string;
+  driveLastBackupAt?: ISODateTime;
   backups: BackupRecord[];
-  notify: { dailySummary: boolean; paymentReceived: boolean; backupFailure: boolean; invoiceDue: boolean };
+  notify: {
+    dailySummary: boolean;
+    paymentReceived: boolean;
+    backupFailure: boolean;
+    invoiceDue: boolean;
+  };
 }
 
 export interface Preferences {
@@ -196,6 +261,9 @@ export interface DemoDB {
   storage: StorageSnapshot[];
   invoices: Invoice[];
   billingPayments: BillingPayment[];
+  wallet: WalletState;
+  notes: Note[];
+  reminders: Reminder[];
   notifications: AppNotification[];
   settings: Settings;
   prefs: Preferences;

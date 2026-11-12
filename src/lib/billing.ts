@@ -1,4 +1,4 @@
-// Reusable CubeSites billing rules. All amounts in paise.
+// Reusable CuboSites billing rules. All amounts in paise.
 import type { InvoiceLine } from "@/types";
 
 export const PRICING = {
@@ -24,7 +24,9 @@ export const staffCharge = (enabledStaff: number) => {
 };
 
 export const averageMB = (bytesPerDay: number[]) =>
-  bytesPerDay.length === 0 ? 0 : bytesPerDay.reduce((a, b) => a + b, 0) / bytesPerDay.length / (1024 * 1024);
+  bytesPerDay.length === 0
+    ? 0
+    : bytesPerDay.reduce((a, b) => a + b, 0) / bytesPerDay.length / (1024 * 1024);
 
 export const storageCharge = (avgMB: number) => {
   const over = Math.max(0, avgMB - PRICING.freeStorageMB);
@@ -34,7 +36,10 @@ export const storageCharge = (avgMB: number) => {
 
 /** Proration for reactivating a site: ₹109 / 30 × remaining billable days. */
 export const reactivationCharge = (remainingDays: number) =>
-  Math.round((PRICING.sitePerMonth * Math.max(0, Math.min(PRICING.daysPerMonth, remainingDays))) / PRICING.daysPerMonth);
+  Math.round(
+    (PRICING.sitePerMonth * Math.max(0, Math.min(PRICING.daysPerMonth, remainingDays))) /
+      PRICING.daysPerMonth,
+  );
 
 export const taxOn = (subtotal: number, ratePct: number) => Math.round((subtotal * ratePct) / 100);
 
@@ -45,17 +50,34 @@ export const billingPeriod = (now = new Date()) => {
   end.setDate(start.getDate() + PRICING.daysPerMonth - 1);
   const dayIndex = Math.floor((now.getTime() - start.getTime()) / 86400000);
   const remaining = Math.max(0, PRICING.daysPerMonth - dayIndex);
-  const iso = (d: Date) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  const iso = (d: Date) =>
+    new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   return { start: iso(start), end: iso(end), remainingDays: remaining };
 };
 
-export const buildInvoiceLines = (opts: { activeSites: number; enabledStaff: number; avgMB: number }): InvoiceLine[] => {
+export const buildInvoiceLines = (opts: {
+  activeSites: number;
+  enabledStaff: number;
+  avgMB: number;
+}): InvoiceLine[] => {
   const s = siteCharge(opts.activeSites);
   const st = staffCharge(opts.enabledStaff);
   const g = storageCharge(opts.avgMB);
   return [
-    { label: "Active sites", detail: `${opts.activeSites} active · ${PRICING.freeSites} free · ${s.billable} × ₹109`, amountPaise: s.amount },
-    { label: "Staff accounts", detail: `${opts.enabledStaff} enabled · ${PRICING.freeStaff} free · ${st.billable} × ₹29`, amountPaise: st.amount },
-    { label: "Storage", detail: `${opts.avgMB.toFixed(1)} MB avg · 250 MB free · ${g.blocks} × ₹5`, amountPaise: g.amount },
+    {
+      label: "Active sites",
+      detail: `${opts.activeSites} active · ${PRICING.freeSites} free · ${s.billable} × ₹109`,
+      amountPaise: s.amount,
+    },
+    {
+      label: "Staff accounts",
+      detail: `${opts.enabledStaff} enabled · ${PRICING.freeStaff} free · ${st.billable} × ₹29`,
+      amountPaise: st.amount,
+    },
+    {
+      label: "Storage",
+      detail: `${opts.avgMB.toFixed(1)} MB avg · 250 MB free · ${g.blocks} × ₹5`,
+      amountPaise: g.amount,
+    },
   ];
 };

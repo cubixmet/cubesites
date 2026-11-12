@@ -6,24 +6,24 @@ import { authService } from "@/services/auth";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      { title: "CuboSites — Site bookkeeping for contractors" },
       {
         name: "description",
         content:
-          "Track expenses, client payments, staff and progress photos across all your construction sites with Cubixmet's CubeSites.",
+          "Track expenses, client payments, staff and progress photos across all your construction sites with CuboSites.",
       },
-      { property: "og:site_name", content: "Cubixmet's CubeSites" },
-      { property: "og:title", content: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      { property: "og:site_name", content: "CuboSites" },
+      { property: "og:title", content: "CuboSites — Site bookkeeping for contractors" },
       {
         property: "og:description",
         content:
-          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built by Cubixmet.",
+          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built in control.",
       },
-      { name: "twitter:title", content: "Cubixmet's CubeSites — Site bookkeeping for contractors" },
+      { name: "twitter:title", content: "CuboSites — Site bookkeeping for contractors" },
       {
         name: "twitter:description",
         content:
-          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built by Cubixmet.",
+          "Mobile-first bookkeeping for contractors managing multiple construction worksites. Built in control.",
       },
     ],
   }),
@@ -32,6 +32,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const nav = useNavigate();
-  useEffect(() => { nav({ to: authService.currentUser() ? "/dashboard" : "/login", replace: true }); }, [nav]);
-  return <div className="grid min-h-screen place-items-center"><Loader2 className="size-6 animate-spin text-primary" /></div>;
+  useEffect(() => {
+    nav({ to: authService.currentUser() ? "/dashboard" : "/login", replace: true });
+  }, [nav]);
+  return (
+    <div className="grid min-h-screen place-items-center">
+      <Loader2 className="size-6 animate-spin text-primary" />
+    </div>
+  );
 }
